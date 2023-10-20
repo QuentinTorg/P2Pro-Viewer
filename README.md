@@ -1,19 +1,19 @@
 # InfiRay P2 Pro Viewer
 
-:warning: **[WIP]**  
+:warning: **[WIP]**
 See [below](#roadmap) for a roadmap.
 
 This project aims to be an open-source image viewer and API for the InfiRay P2 Pro thermal camera module.
 
 The communication protocol was reverse-engineered, to avoid needing to include the proprietary precompiled InfiRay libraries.
 
-**Disclaimer**: This is my first big Python multi-module project. So there are bound to be horrific architectural decisions and many other beginner's mistakes. Please excuse that.  
+**Disclaimer**: This is my first big Python multi-module project. So there are bound to be horrific architectural decisions and many other beginner's mistakes. Please excuse that.
 The premise is to get to the first milestone with as little premature optimization as possible, otherwise I would never arrive there.
 
 ## Notices
 ### Windows
-For sending vendor control transfers to the UVC camera in addition to opening the camera as a normal UVC camera, libusb needs to be installed as an upper filter driver.  
-This can be installed relatively easily using Zadig.  
+For sending vendor control transfers to the UVC camera in addition to opening the camera as a normal UVC camera, libusb needs to be installed as an upper filter driver.
+This can be installed relatively easily using Zadig.
 - Options > List all devices
 - Select "USB Camera (Interface 0)"
 - Scroll to "libusb-win32" and select "Install filter driver" from the dropdown besides "Replace driver"
@@ -21,10 +21,16 @@ This can be installed relatively easily using Zadig.
 Also, the camera video stream needs to be opened first before using the script to send commands to it, otherwise the call to libusb will just hang for whatever reason.
 
 ### Linux
+- Set up USB permissions
+  - Install udev rules `sudo cp 60-p2pro.rules /etc/udev/rules.d/`
+  - Add current user to `video` group `sudo usermod -a -G video "$USER"`
+  - reboot computer (logging out may be all that's required)
+- Install dependencies
+  - `pip3 install ffmpeg pyusb pyaudio`
 Still needs to be tested, but should work™
 
 ## Where to buy
-The cheapest vendor in Germany appears to be [Peargear](https://www.pergear.de/products/infiray-p2-pro?ref=067mg).  
+The cheapest vendor in Germany appears to be [Peargear](https://www.pergear.de/products/infiray-p2-pro?ref=067mg).
 Pergear also has [an international shop](https://www.pergear.com/products/infiray-p2-pro?ref=067mg) for other countries, but I'm not sure if they're the cheapest there.
 
 ## Additional Resources
@@ -39,7 +45,7 @@ Pergear also has [an international shop](https://www.pergear.com/products/infira
         - [x] "standard" cmd
         - [x] "long" cmd
         - [x] wait for camera ready
-    - [x] Pseudo color 
+    - [x] Pseudo color
     - [ ] NUC shutter control (auto/manual/trigger)
     - [ ] High/low temperature range
     - [ ] Other parameters (emissivity, distance, etc)

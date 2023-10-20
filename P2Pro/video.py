@@ -78,8 +78,13 @@ class Video:
             if camera_id == None:
                 raise ConnectionError(f"Could not find camera module")
 
+        # linux requires V4L device to receive YUYV data
+        capture_device = cv2.CAP_ANY
+        if platform.system() == 'Linux':
+            capture_device = cv2.CAP_V4L
+
         # check if video capture can be opened
-        cap = cv2.VideoCapture(camera_id)
+        cap = cv2.VideoCapture(camera_id, capture_device)
         if (not cap.isOpened()):
             raise ConnectionError(f"Could not open video capture device with index {camera_id}, is the module connected?")
 
@@ -102,8 +107,8 @@ class Video:
                 continue
 
             self.video_running = True
-            
-            # On Windows, with RGB conversion turned off, OpenCV returns the image as a 2D array with size [1][<imageLen>]. Turn into 1D array. 
+
+            # On Windows, with RGB conversion turned off, OpenCV returns the image as a 2D array with size [1][<imageLen>]. Turn into 1D array.
             if platform.system() == 'Windows':
                 frame = frame[0]
 
